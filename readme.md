@@ -1,4 +1,4 @@
-#h1SFU Student Workout Tracker
+#SFU Student Workout Tracker
 
 Last Updated: December 2013  
 Framework: Django  
