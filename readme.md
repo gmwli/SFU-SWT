@@ -1,5 +1,8 @@
 ==SFU Student Workout Tracker
 
+Last Updated: December 2013
+Framework: Django
+
 A student workout tracker designed to:
 * Use SFU's Student Authentication System for log-in
 * Allow students to have their own personalized profile page
