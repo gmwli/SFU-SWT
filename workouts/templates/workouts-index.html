@@ -1,0 +1,104 @@
+{% extends "base-default.html" %}
+
+
+<!-- Header Content Block
+================================================== -->
+
+
+<!-- Main Content Block After Navigation
+================================================== -->
+{% block content %}
+<div class="container-fluid">
+	<div class="row-fluid">
+
+		<!-- Workouts Column -->
+		<div class="col-md-12">
+			<!-- Introductory -->
+			<h1>Workout Tracker</h1>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue tempor pharetra. In a dapibus nulla. Morbi pellentesque velit eget lorem ultrices, a gravida leo elementum. Cras id massa sed enim scelerisque auctor. Integer orci erat, ullamcorper id molestie ac, eleifend id nisl. Cras suscipit tortor at faucibus faucibus. Morbi eget nunc sed est ullamcorper facilisis.</p>
+
+			<div class="panel panel-primary mar-top-25">
+				<div class="panel-heading">
+					<h3 class="panel-title">My Workout Summary - Page {{ page_id }}</h3>
+				</div>
+				<div class="panel-body">
+					<table class="table table-striped table-bordered table-hover">
+					
+						<!-- Add New Workout -->
+						<tr>
+							<td>
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<h3 class="panel-title">Add Workout</h3></div>
+								<div class="panel-body">
+								<div class="col-md-4">
+									<button type="button" id="btn-add-cardio" class="btn btn-primary btn-sm">Cardio Workout</button>
+									<button type="button" id="btn-add-weights" class="btn btn-primary btn-sm">Weights Workout</button>
+
+									<form class="form-horizontal formfield-b hidden" action="/swt/workouts/" method="post">{% csrf_token %}
+										<div class="hidden">{{ form.style }}</div>
+										<div class="formfield-c mar-topbot-5 hidden"><b>Type:</b> {{ form.cardio_type }}</div>
+										<div class="formfield-w mar-topbot-5 hidden"><b>Type:</b> {{ form.weights_type }}</div>
+										<div class="formfield-b mar-topbot-5 hidden"><b>Date Completed (m/d/y):</b> {{ form.date }}</div>
+										<div class="formfield-c mar-topbot-5 hidden"><b>Speed (km/h):</b> {{ form.speed }}</div>
+										<div class="formfield-c mar-topbot-5 hidden"><b>Duration (mins):</b> {{ form.time }}</div>
+										<div class="formfield-w mar-topbot-5 hidden"><b>Weight (kg):</b> {{ form.weight }}</div>
+										<div class="formfield-w mar-topbot-5 hidden"><b>Sets:</b> {{ form.sets }}</div>
+										<div class="formfield-w mar-topbot-5 hidden"><b>Reps:</b> {{ form.reps }}</div>
+									<div class="mar-top-10">
+										<input class="btn btn-primary btn-xs formfield-b hidden" type="submit" name="addsubmit" value="Add Workout">
+										<button class="btn btn-primary btn-xs formfield-b hidden" id="btn-cancel-workout">Cancel</button>
+									</div>
+									</form>
+								</div>
+								</div>
+							</div>
+							</td>
+						</tr>
+
+						<!-- Past Workout Summary -->
+						{% for workout in workouts %}
+						<tr>
+							<td>
+							{% if workout.style = 'Weights Workout' %}
+							<h3 class="neg-mar-top-3">{{ workout.style }} - {{ workout.weights_type }}</h3>
+							<ul>
+								<li><b>Date Completed:</b> {{ workout.date }}</li>
+								<li><b>Weight:</b> {{ workout.weight }} kg</li>
+								<li><b>No. of Sets:</b> {{ workout.sets }}</li>
+								<li><b>No. of Reps:</b> {{ workout.reps }} </li>
+							</ul>
+
+							{% elif workout.style = 'Cardio Workout' %}
+							<h3 class="neg-mar-top-3">{{ workout.style }} - {{ workout.cardio_type }}</h3>
+
+							<ul>
+								<li><b>Date Completed:</b> {{ workout.date }}</li>
+								<li><b>Speed:</b> {{ workout.speed }} km/h</li>
+								<li><b>Duration:</b> {{ workout.time }} minutes</li>
+							</ul>
+							{% endif %}
+						
+							</td>
+						</tr>
+						{% endfor %}
+						<tr>
+							<td>
+								<div class="btn-toolbar mar-wk-btn">
+									<div class="btn-group">
+									{% for page in page_list %}
+										<button type="button" class="btn btn-primary btn-sm" onclick="location.href='/swt/workouts/{{ forloop.counter }}/'">{{ forloop.counter }}</button>
+									{% endfor %}
+									</div>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{% block title %} My Base Template{% endblock %} </title>
+	<!--
+	<style>
+	   body{
+                        text-align: center;
+                        }
+                #page {
+                        width: 960px;
+                        text-align: left;
+                        margin: 10px auto 20px auto     ;
+                        background-color: #0c0c0c;
+                        }
+                #sidebar{
+                        float:left;
+                        width: 200px;
+                        border: 1px solid #f00
+                        }
+                #content {
+
+                        float: left;
+                        width: 600px;
+                        border: 1px solid #000;
+                        padding: 10px;
+                }
+                
+	</style>
+	-->
+	<link rel="stylesheet" href="{% static "assets/css/default.css" %}" type="text/css" />
+</head>
+<body>
+
+	<div id ="page">
+		<div id ="sidebar">
+			{% block sidebar %}
+			<ul>
+				<li><a href="/swt/profiles/edit">Edit Profile</a></li>
+				<li><a href="/swt/">Home</a></li>
+			</ul>
+			{% endblock%}
+		</div>
+		<div id="content">
+			{% block content %}     {% endblock %}
+
+			<img src="http://www.popworkouts.com/wp-content/uploads/2013/05/the-rock-workout-chest-cable-flys.jpg" width= "200"/>
+		</div>
+	</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

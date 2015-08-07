@@ -1,0 +1,16 @@
+{% extends "base-default.html" %}
+
+<!-- generates personal workout charts -->
+
+
+{% block header %}
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script src="http://code.highcharts.com/highcharts.js"></script>
+			{% load chartit %}
+			{{ workoutchart|load_charts:"container" }}
+{% endblock %}
+
+{% block content %}
+			<div id="container">
+			</dv>
+{% endblock %}

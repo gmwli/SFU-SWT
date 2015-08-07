@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Welcome to SFU Workout Tracker</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{% static "assets/css/bootswatch.css" %}" type="text/css" />
+	<link rel="stylesheet" href="{% static "assets/css/bootstrap-mod.css" %}" type="text/css" />
+
+	{% block header %}
+	{% endblock %}
+</head>
+<body>
+
+	<!-- Navigation Menu
+	================================================== -->
+	<div class="navbar-wrapper">
+		<div class="container-fluid">
+
+			<div class="navbar navbar-default navbar-static-top">	
+				<div class="navbar-header">
+					<div class="navbar-brand">SFU Workout Tracker</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	
+
+	<!-- Content Rows
+	================================================== -->
+	{% block content %}
+	{% endblock %}
+
+
+	<!-- JavaScript Files
+	================================================== -->
+	<script src="{% static "assets/js/jquery-1.10.2.js" %}"></script>
+	<script src="{% static "assets/js/bootstrap.min.js" %}"></script>
+	<script src="{% static "assets/js/swt-code.js" %}"></script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,50 @@
+.pad-sides-5 {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.pad-bot-5 {
+	padding-bottom: 5px;
+}
+
+.pad-top-25 {
+	padding-top: 25px;
+}
+
+.mar-top-10 {
+	margin-top: 10px;
+}
+
+.mar-top-25 {
+	margin-top: 25px;
+}
+
+.mar-topbot-5 {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.mar-wk-btn {
+	margin-top: 5px;
+	margin-bottom: -20px;
+	padding-bottom: 0px;
+}
+
+.neg-mar-top-3 {
+	margin-top: -3px;
+}
+
+.txt-white {
+	color: white;
+}
+
+.txt-main {
+	color: #2c3e50;
+}
+
+.bgcolor {
+	background-color: #888;
+}
+
+.inline {
+	display: inline-block;
+}

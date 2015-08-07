@@ -1,0 +1,67 @@
+<!-- original template for rendering social workout charts.
+not used in current application -->
+
+
+
+<html>
+	<head>
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript">
+
+		google.load('visualization', '1.0', {'packages':['corechart']});
+
+		google.setOnLoadCallback(drawChart);
+
+		function drawChart() {
+
+		var dat = new google.visualization.DataTable();
+		dat.addColumn('string', 'Workout');
+		dat.addColumn('number', 'Number of Workouts');
+		dat.addRows([
+			['Chest Workouts', {{ my_chest_workouts }} ],
+			['Legs Workouts', {{ my_legs_workouts }} ],
+			['Back Workouts', {{ my_back_workouts }} ],
+			['Treadmill Workouts', {{ my_treadmill_workouts }} ],
+			['Stairs Workouts', {{ my_stairs_workouts }} ],
+			['Rowing Workouts', {{ my_rowing_workouts }} ]
+		]);
+		
+		var options = {'title':'My Workout Summary',
+						'width':900,
+						'height':900};
+						
+		var chart = new google.visualization.PieChart(document.getElementById('my_chart_div'));
+		chart.draw(dat, options);
+
+ 		var data = new google.visualization.DataTable();
+ 		data.addColumn('string', 'Workout');
+		data.addColumn('number', 'Number of Workouts');
+		data.addRows([
+			['Chest Workouts', {{ total_chest_workouts }} ],
+			['Legs Workouts', {{ total_legs_workouts }} ],
+			['Back Workouts', {{ total_back_workouts }} ],
+			['Treadmill Workouts', {{ total_treadmill_workouts }} ],
+			['Stairs Workouts', {{ total_stairs_workouts }} ],
+			['Rowing Workouts', {{ total_rowing_workouts }} ]
+		 ]);
+
+		var options = {'title':'Social Workout Summary',
+						'width':900,
+						'height':900};
+
+
+
+		var chart = new google.visualization.PieChart(document.getElementById('social_chart_div'));
+		chart.draw(data, options);
+		}
+		</script>
+	</head>
+
+	<body>
+	<div id="my_chart_div"></div>
+	<div id="social_chart_div"></div>
+	</body>
+</html>
+
+
+

@@ -1,0 +1,66 @@
+<html>
+
+<!-- original html for chartit testing
+not used in current application -->
+
+<h2>Leg Workout Summary</h2>
+
+<!--<table border="1">
+#<tr>
+#<th>Weight</th> 
+#<th>Sets </th>
+#<th>Reps</th>
+#<th>Date</th>
+#<th>Type</th>
+#</tr>
+-->
+<script language="JavaScript" type="text/javascript">
+	function redirect(site) {
+	window.location = site
+}
+</script>
+
+
+
+
+
+
+<h2>Add Workout</h2>
+<select onchange="redirect(this.value)">
+<option value="#">Choose a Workout:</option>
+<option value="/swt/workouts/addweightworkout/">Weight Workout</option>
+<option value="/swt/workouts/addcardioworkout/">Cardio Workout</option>
+</select>
+
+{% for workout in workouts|slice:":5" %}
+	{% if workout.type == "CHEST" or workout.type == "LEGS" or workout.type == "BACK" %}
+<!--	#<tr>
+	#<td>{{workout.weight}}</td>
+	#<td>{{workout.sets}}</td>
+	#<td>{{workout.reps}}</td>
+	#<td>{{workout.day}}</td>
+	#<td>{{workout.type}}</td>
+	#</tr>
+-->
+	<ul>{{workout.type}} workout
+		<li>{{workout.weight}} kg</li>
+		<li>{{workout.sets}} sets</li>
+		<li>{{workout.reps}} reps</li>
+		<li>{{workout.date}} </li>
+	</ul>
+
+	{% elif workout.type == "TREADMILL" or workout.type == "STAIRS" or workout.type == "ROWING" %}
+	<ul>{{workout.type}} workout
+		<li>{{workout.speed}} km/h</li>
+		<li>{{workout.time}} minutes</li>
+		<li>{{workout.date}}</li>
+	</ul>
+	{% endif %}
+{% endfor %}
+<!--#</table> -->
+<p><a href="/swt/home/"</a>Home</p>
+
+
+
+
+</html>

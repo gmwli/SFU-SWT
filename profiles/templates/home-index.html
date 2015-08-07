@@ -1,0 +1,180 @@
+{% extends "base-default.html" %}
+{% load static %}
+
+
+<!-- Header Content Block
+================================================== -->
+
+
+<!-- Main Content Block After Navigation
+================================================== -->
+{% block content %}
+<div class="container-fluid">
+	<div class="row-fluid">
+
+		<!-- Column: Left -->
+		<div class="col-md-9">
+			<!-- Introductory -->
+			<h1>Welcome to the SFU Workout Tracker</h1>
+			<h2>Hi, {{ profile.first_name|title }} {{ profile.last_name|title }}.</h2>
+			<p>Within the heart of Simon Fraser University, the Recreation Center provides students and community with a fun, friendly, and motivated environment to get yourself moving and enjoy being fit.</p>
+
+			<blockquote>
+				<p>People often say that motivation doesn't last. Well, neither does bathing. That's why we recommend it daily.</p>
+				<small>Zig Ziglar</small>
+			</blockquote>
+
+			<h3>Using SFU Workout Tracker</h3>
+
+			<p>If you don't track, how do you know if you're improving? Track all your activities, whether that's weight-lifting, running the treadmill, or even enjoying watch yourself skiprope through the mirror. By tracking your progress, you'll be able to learn more about which types of activities you focus on at the gym, be able to set and organize your next workout, and just purely show off and tell others about your process!</p>
+			
+			<p>Using <strong>SFU Workout Tracker</strong>, you'll be able to submit and track each workout that you do and look back on it. Have friends that go to the gym too? Add them! Keep an eye on your progress and how all your friends and community are doing with some nifty performance graphs. You can even book equipment through SWT so that you can ensure the equipment will be availble to you when you arrive.</p>
+		
+			<div class="panel panel-primary mar-top-25">
+				<div class="panel-heading">
+					<h3 class="panel-title">Recent Workouts</h3>
+				</div>
+				<div class="panel-body">
+					<table class="table table-striped table-bordered table-hover">
+						{% if workouts|length = 0 %}
+							<tr><td><span>None</span></td></tr>
+						{% else %}
+							{% for workout in workouts %}
+							<tr>
+								<td>
+								{% if workout.style = 'Weights Workout' %}
+								<h3 class="neg-mar-top-3">{{ workout.style }} - {{ workout.weights_type }}</h3>
+								<ul>
+									<li><b>Date Completed:</b> {{ workout.date }}</li>
+									<li><b>Weight:</b> {{ workout.weight }} kg</li>
+									<li><b>No. of Sets:</b> {{ workout.sets }}</li>
+									<li><b>No. of Reps:</b> {{ workout.reps }} </li>
+								</ul>
+
+								{% elif workout.style = 'Cardio Workout' %}
+								<h3 class="neg-mar-top-3">{{ workout.style }} - {{ workout.cardio_type }}</h3>
+								<ul>
+									<li><b>Date Completed:</b> {{ workout.date }}</li>
+									<li><b>Speed:</b> {{ workout.speed }} km/h</li>
+									<li><b>Duration:</b> {{ workout.time }} minutes</li>	
+								</ul>
+								{% endif %}
+								</td>
+							</tr>
+							{% endfor %}
+						{% endif %}
+					</table>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Column: Right -->
+		<div class="col-md-3">
+			<!-- General Information -->
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">General Inforamtion</h3>
+				</div>
+				<div class="panel-body">
+					<h4>Location</h4>
+					<p class="pad-bot-5 pad-sides-5">The Burnaby campus's Rec facilities are on the west side of the campus near the West Mall Complex (WMX) and just before Residence and Housing. There are access points to the main Lorne Davies Complex from all levels.</p>
+
+					<h4>Facility Hours</h4>
+					<p class="pad-sides-5">
+						<b>Monday to Friday:</b> 8:00am-6:00pm<br />
+						<b>Weekends:</b> 10:00am-5:00pm<br/>
+						<b>Holidays:</b> Closed<br/>
+					</p>
+					<h4>Facility Status</h4>
+					<table class="pad-sides-5">
+						{% for location in gym_status %}
+						<tr>
+							<td>
+								{% if curr_weekday == 'Saturday' or curr_weekday == 'Sunday' %}
+									{% if curr_hour >= 11 and curr_hour <= 13 %}
+									<img src="{% static "assets/img/red-circle-icon.png" %}" alt="red">
+									{% elif curr_hour >= 10 and curr_hour <= 17 %}
+									<img src="{% static "assets/img/green-circle-icon.png" %}" alt="green">
+									{% elif curr_hour < 10 or curr_hour > 17 %}
+									<img src="{% static "assets/img/gray-circle-icon.png" %}" alt="gray">
+									{% endif %}
+								{% else %}
+									{% if curr_hour >= 10 and curr_hour <= 13 %}
+									<img src="{% static "assets/img/red-circle-icon.png" %}" alt="red">
+									{% elif curr_hour >= 8 and curr_hour <= 18 %}
+									<img src="{% static "assets/img/green-circle-icon.png" %}" alt="green">
+									{% elif curr_hour < 8 or curr_hour > 18 %}
+									<img src="{% static "assets/img/gray-circle-icon.png" %}" alt="gray">
+									{% endif %}
+								{% endif %}
+							</td>
+							<td class="pad-sides-5">{{ location.gym_area }}</td>
+						</tr>
+						{% endfor %}
+					</table>
+				
+				</div>
+			</div>
+
+			<!-- Friend List -->
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Friend List</h3>
+				</div>
+				<div class="panel-body">
+					<div class="pad-bot-5">
+						<h4>Requests</h4>
+						<ul>
+							{% if friends_request|length = 0 %}
+							<li>None</li>
+							{% else %}
+								{% for request in friends_request %}
+								<li>{{ request.sender_id }} - <a href="/swt/profiles/friend-accept/{{ request.sender_id }}/"><span class="label label-success">Accept</span></a> <a href="/swt/profiles/friend-decline/{{ request.sender_id }}/"><span class="label label-danger">Decline</span></a></li>
+								{% endfor %}
+							{% endif %}
+						</ul>
+					</div>
+					
+					<div class="pad-bot-5">
+						<h4>Friends</h4>
+						{% if friends_accepted|length = 0 and friends_pending|length = 0 %}
+						<ul><li>None</li></ul>
+						{% else %}
+						<table>
+							{% for friend in friends_accepted %}
+							<tr>
+								<td><img src="{% static "assets/img/approved-icon.png" %}" alt="approved"></td>
+								<td class="pad-sides-5"><strong>{{ friend.receiver_id }}</strong></td>
+								<td class="pad-sides-5">
+									<span class="label label-primary pad-sides-5"><a class="txt-white" href="/swt/friends/{{ friend.receiver_id }}/">View Profile</a></span>
+									<span class="label label-info pad-sides-5"><a class="txt-white" href="/swt/profiles/friend-decline/{{ request.sender_id }}/">Unfriend</a></span>
+								</td>
+							</tr>
+							{% endfor %}
+							{% for friend in friends_pending %}
+							<tr>
+								<td><img src="{% static "assets/img/pending-icon.png" %}" alt="pending"></td>
+								<td class="pad-sides-5">{{ friend.receiver_id }}</td>
+							</tr>
+							{% endfor %}
+						</table>
+						{% endif %}
+					</div>					
+					
+					<div>
+						<h4>Add Friend</h4>
+						<form action="/swt/profiles/friend-request/" method="post">{% csrf_token %}
+							<span><b>Friend Id:</b></span> 
+							<p>{{ friends_form.receiver_id }}</p>
+							<input type="submit" name="submit" value="Add Friend" class="btn btn-primary btn-xs">
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+{% endblock %}

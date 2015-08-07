@@ -1,0 +1,25 @@
+{% extends "base-default.html" %}
+
+<!-- used for generating personal workout charts -->
+
+
+{% block content %}
+
+<h1>Request Workout Chart</h1>
+
+
+
+<form action="/swt/workouts/requestpersonalchart/" method="post">{% csrf_token %}
+<ul>
+    {{ form.as_p }}
+</ul>
+
+<!-- <input type="submit" name="submit" value="Request Workout">  -->
+
+
+<input class="btn btn-primary btn-sm pull-left" type="submit" name="submit" value="Generate Chart">
+
+</form>
+
+
+{% endblock %}

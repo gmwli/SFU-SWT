@@ -1,0 +1,34 @@
+{%load static%}
+{% load dajaxice_templatetags %}
+
+<head>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src=" http://tsimissoula.com/tsimissoula.com/system/extend/jquery_plugins/jquery.ba-serializeobject.min.js"></script>
+<script type="text/javascript" src="/static/dajax/jquery.dajax.core.js"></script>
+{% dajaxice_js_import %}
+
+<script src="/static/dajax/jquery.dajax.core.js"></script>
+
+<script type="text/javascript">
+	Dajaxice.bookings.say_hello(Dajax.process);
+</script>
+
+<script src="/static/dajax/jquery.dajax.core.js" type="text/javascript" charset="utf-8"></script>
+
+<script type="text/javascript">
+function calculate(){
+    Dajaxice.bookings.multiply(Dajax.process,{'a':$('#a').val(),'b':$('#b').val()});
+
+}
+</script>
+</head>
+
+<body>
+<h1>Sample Multiplier</h1>
+<input type="text" value="5" id="a"> x
+<input type="text" value="6" id="b"> =
+<input type="text" value="" id="result">
+<input type="button" value="Multiply!" onclick="calculate();">
+
+</body>
+</html>

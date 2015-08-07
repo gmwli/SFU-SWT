@@ -1,0 +1,186 @@
+{% extends "base-default.html"%}
+{% load static %}
+
+
+{% block content %}
+<div class="container-fluid">
+	<div class="row-fluid">
+		<!-- Booking Summary -->
+		<div class="col-md-3">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">My Bookings</h3>
+				</div>
+				<div class="panel-body">
+					<h4>Today</h4>
+					{% if my_bookings|length != 0 %}
+						{% for booking in my_bookings %}
+						<p>
+							{{ booking.machine_name|title }} Machine
+							{{ booking.booked_time }}:00
+							{{ booking.booked_date|date:"Y-n-j" }}
+					    </p>
+					    <form action="/swt/bookings/unbook/{{ booking.machine_name }}/{{ booking.booked_date|date:"Ymd" }}/{{ booking.booked_time }}" method="post">{% csrf_token %}
+							<input class="btn btn-primary btn-sm col-md-offset-4" type="submit" name="submit" value="Cancel Booking">
+						</form>
+						{% endfor %}
+					{% else %}
+						<p>None</p>
+					{% endif %}
+					<!--Tomorrow's Bookings-->
+					<h4>Tomorrow</h4>
+					{% if my_bookings_tmr|length != 0 %}
+						{%for booking in my_bookings_tmr %}
+						<p>
+							{{ booking.machine_name|title }} Machine
+							{{ booking.booked_time }}:00
+							{{ booking.booked_date|date:"Y-n-j" }}
+						</p>   
+						<form action="/swt/bookings/unbook/{{ booking.machine_name }}/{{ booking.booked_date|date:"Ymd" }}/{{ booking.booked_time}}" method="post">{% csrf_token %}
+							<input class="btn btn-primary btn-sm col-md-offset-4" type="submit" name="submit" value="Cancel Booking">
+						</form>	
+						{% endfor %}
+					{% else %}
+						<p>None</p>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-8">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Book a Workout Machine for Today</h3>
+				</div>
+				<div class="panel-body">
+					{% if time > 20 %}
+					   <p>Sorry, the Gym is closed now</p>
+					{% else %}
+					<!-- Book Machine Form -->
+					<form class="form-horizontal" action="/swt/bookings/" method="post">{% csrf_token %}
+						<div class="form-group">
+							<label for="id_machine_name" class="col-md-2 control-label">Machine Type</label>
+							<div class="col-md-3">{{ form_today.machine_name }}</div>
+						</div>
+						<div class="form-group hidden" id="div-treadmill-time">
+							<label for="id_treadmill_time" class="col-md-2 control-label">Available Times</label>
+							<div class="col-md-3">{{ form_today.treadmill_time }}</div>
+							<img src=" http://syracusefitness.com/Treadmills/treadmills_pic.jpg" width="200" height="200">
+						</div>
+						<div class="form-group hidden" id="div-stairs-time">
+							<label for="id_stairs_time" class="col-md-2 control-label">Available Times</label>
+							<div class="col-md-3">{{ form_today.stairs_time }}</div>
+							<img src="  http://images.amazon.com/images/G/01/stores/sport-goods/B001AS4YVC-handrails.jpg" width="200" height="200">
+						</div>
+						<div class="form-group hidden" id="div-rowing-time">
+							<label for="id_rowing_time" class="col-md-2 control-label">Available Times</label>
+							<div class="col-md-3">{{ form_today.rowing_time }}</div>
+							<img src=" http://www.littleblokefitness.com.au/wp-content/uploads/wpsc/product_images/concept2%20model%20d%203.jpg" width="200" heigth="200">
+						</div>
+						<div class="form-group hidden" id="div-booking-submit">
+							<input class="btn btn-primary btn-sm col-md-offset-4" type="submit" name="submit" value="Book Machine">
+						</div>
+					</form>
+					{% endif %}
+				</div>
+			</div>
+
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<!-- Tomorrow related form-->
+					<h3 class="panel-title">Book a Workout Machine for Tomorrow</h3>
+				</div>
+				<div class="panel-body">
+					<!-- Book Machine Form: Tomorrow -->
+					<form class="form-horizontal" action="/swt/bookings/tomorrow/" method="post">{% csrf_token %}
+						<div class="form-group">
+							<label for="id_machine_name" class="col-md-2 control-label">Machine Type</label>
+							<div class="col-md-3">{{ form_tomorrow.machine_name_tmr }}</div>
+						</div>
+						<div class="form-group hidden" id="div-treadmill-time-tmr">
+							<label for="id_treadmill_time" class="col-md-2 control-label">Available Times</label>
+							<div class="col-md-3">{{ form_tomorrow.treadmill_time_tmr }}</div>
+						</div>
+						<div class="form-group hidden" id="div-stairs-time-tmr">
+							<label for="id_stairs_time" class="col-md-2 control-label">Available Times</label>
+							<div class="col-md-3">{{ form_tomorrow.stairs_time_tmr }}</div>
+						</div>
+						<div class="form-group hidden" id="div-rowing-time-tmr">
+							<label for="id_rowing_time" class="col-md-2 control-label">Available Times</label>
+							<div class="col-md-3">{{ form_tomorrow.rowing_time_tmr }}</div>
+						</div>
+						<div class="form-group hidden" id="div-booking-submit-tmr">
+							<input class="btn btn-primary btn-sm col-md-offset-4" type="submit" name="submit_tmr" value="Book Machine">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+
+	{% for full in fully_booked_treadmill %}
+		var value= {{ full }} ;
+        	 {%if full == 1 %}
+		    var counter= {{forloop.counter0}};
+		    var timeslot_t = counter;//this will be the possition to hide 
+	            var treadmillElement = document.getElementById('id_treadmill_time').getElementsByTagName('option')[timeslot_t];
+                    treadmillElement.className= treadmillElement.className+ " hidden";
+		 {% endif %}				
+	{% endfor %}
+	var offset_t = {{ default_t_index }} - 6;
+        document.getElementById('id_treadmill_time').selectedIndex=offset_t;	
+	
+	{% for full in fully_booked_stairs %}
+                var value= {{ full }} ;
+                 {%if full == 1 %}
+                    var counter= {{forloop.counter0}};
+                    var timeslot_s = counter;//this will be the possition to hide
+                    var stairsElement = document.getElementById('id_stairs_time').getElementsByTagName('option')[timeslot_s];
+                    stairsElement.className= stairsElement.className+ " hidden";
+                {% endif %}
+        {% endfor %}
+        var offset_s = {{ default_s_index }} - 6;
+        document.getElementById('id_stairs_time').selectedIndex=offset_s;
+
+	{% for full in fully_booked_rowing %}
+                var value= {{ full }} ;
+                 {%if full == 1 %}
+                    var counter= {{forloop.counter0}};
+                    var timeslot_r = counter;//this will be the possition to hide
+                    var rowingElement = document.getElementById('id_rowing_time').getElementsByTagName('option')[timeslot_r];
+                    rowingElement.className= rowingElement.className+ " hidden";
+                {% endif %}
+        {% endfor %}
+        var offset_r = {{ default_r_index }} - 6;
+        document.getElementById('id_rowing_time').selectedIndex=offset_r;
+	
+
+	//this removes the times that are before the current time
+	//delete the time that has already past REMOVE THIS so its syncronized according to the time 
+        var hour= new Date().getHours() -6;//replace this by {{time}}
+        for(var i=0; i <hour; i++){
+                var temp_t = document.getElementById('id_treadmill_time').getElementsByTagName('option')[i];
+                temp_t.className= temp_t.className+ " hidden";
+		var temp_s= document.getElementById('id_stairs_time').getElementsByTagName('option')[i];		
+		temp_s.className= temp_s.className+ " hidden";
+		var temp_r= document.getElementById('id_rowing_time').getElementsByTagName('option')[i];                
+                temp_r.className= temp_r.className+ " hidden";
+        }
+	document.getElementById('id_rowing_time').selectedIndex=hour;
+	document.getElementById('id_stairs_time').selectedIndex=hour;
+	document.getElementById('id_treadmill_time').selectedIndex=hour;	
+
+
+
+</script>
+
+{% endblock %}
+
+
+
